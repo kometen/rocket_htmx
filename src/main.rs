@@ -2,20 +2,31 @@
 
 use std::path::PathBuf;
 use rocket::response::status::NotFound;
-use rocket::fs::NamedFile;
 use askama_rocket::Template;
+use rocket::fs::NamedFile;
+
+#[derive(Template)]
+#[template(path = "index.html")]
+struct IndexTemplate {
+    name: String,
+}
 
 #[get("/")]
-async fn root() -> Result<NamedFile, NotFound<String>> {
-    NamedFile::open("site/static/index.html")
-        .await
-        .map_err(|e| NotFound(e.to_string()))
+async fn root() -> Result<IndexTemplate, NotFound<String>> {
+    let template = IndexTemplate {
+        name: "World".to_string(),
+    };
+
+    let response = template;
+    Ok(response)
 }
 
 #[get("/<path..>")]
 async fn static_files(path: PathBuf) -> Result<NamedFile, NotFound<String>> {
     let path = PathBuf::from("site").join(path);
-    NamedFile::open(path).await.map_err(|e| NotFound(e.to_string()))
+    NamedFile::open(path)
+        .await
+        .map_err(|e| NotFound(e.to_string()))
 }
 
 #[launch]
