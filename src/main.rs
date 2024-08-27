@@ -45,7 +45,10 @@ async fn root(password_count: &State<PasswordAttributes>) -> Result<IndexTemplat
 async fn increment_password_count(password_count: &State<PasswordAttributes>) -> Result<PasswordCounterTemplate, NotFound<String>> {
 
     let c = password_count.count.load(Ordering::Relaxed) + 1;
-    password_count.count.store(c, Ordering::Relaxed);
+
+    if c < 31 {
+        password_count.count.store(c, Ordering::Relaxed);
+    }
 
     let template = PasswordCounterTemplate {
         password_count_value: password_count.count.load(Ordering::Relaxed),
@@ -60,7 +63,10 @@ async fn increment_password_count(password_count: &State<PasswordAttributes>) ->
 async fn decrement_password_count(password_count: &State<PasswordAttributes>) -> Result<PasswordCounterTemplate, NotFound<String>> {
 
     let c = password_count.count.load(Ordering::Relaxed) - 1;
-    password_count.count.store(c, Ordering::Relaxed);
+
+    if c > 0 {
+        password_count.count.store(c, Ordering::Relaxed);
+    }
 
     let template = PasswordCounterTemplate {
         password_count_value: password_count.count.load(Ordering::Relaxed),
