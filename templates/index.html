@@ -1,16 +1,28 @@
 <!doctype html>
 <html lang="">
 <head>
-    <meta charset="UTF-8" />
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="light dark">
     <title>Rust and askama template engine</title>
     <link rel="stylesheet" href="/static/css/pico.min.css">
     <script src="/static/htmx.min.js"></script>
 </head>
 <body>
-<h1>Fly 🦀🚀</h1>
-<p>Hello {{ name }}</p>
-<p id="password_count">Password-count: {{ password_count_value }}</p>
-<button hx-get="/increment_password_count" hx-target="#password_count">increment password count</button>
-<button hx-get="/decrement_password_count" hx-target="#password_count">decrement password count</button>
+<main class="container">
+    <h1>Fly 🦀🚀</h1>
+    <p>Hello {{ name }}</p>
+    <div>
+        <p id="password_count">Password-count: {{ password_count_value }}</p>
+        <button hx-get="/increment_password_count" hx-target="#password_count">increment password count</button>
+        <button hx-get="/decrement_password_count" hx-target="#password_count">decrement password count</button>
+    </div>
+    <hr />
+    <div>
+        <p id="password_length">Password-length: {{ password_length_value }}</p>
+        <button hx-get="/increment_password_length" hx-target="#password_length">increment password length</button>
+        <button hx-get="/decrement_password_length" hx-target="#password_length">decrement password length</button>
+    </div>
+</main>
 </body>
 </html>
