@@ -1,3 +1,4 @@
+use crate::password_generator::produce_passwords;
 use crate::PasswordAttributes;
 use askama::Template;
 use rocket::response::status::NotFound;
@@ -29,6 +30,7 @@ pub async fn increment_password_count(
     );
 
     let response = template;
+    println!("{:?}", produce_passwords(&password_attribute));
     Ok(response)
 }
 
@@ -51,5 +53,7 @@ pub async fn decrement_password_count(
     );
 
     let response = template;
+    produce_passwords(&password_attribute);
+    println!("{:?}", produce_passwords(&password_attribute));
     Ok(response)
 }
