@@ -15,13 +15,13 @@
     <div>
         <p id="password_count">Password-count: {{ password_count_value }}</p>
         <button hx-get="/increment_password_count" hx-target="#password_count">increment password count</button>
-        <button hx-get="/decrement_password_count" hx-target="#password_count">decrement password count</button>
+        <button class="secondary" hx-get="/decrement_password_count" hx-target="#password_count">decrement password count</button>
     </div>
     <hr />
     <div>
         <p id="password_length">Password-length: {{ password_length_value }}</p>
         <button hx-get="/increment_password_length" hx-target="#password_length">increment password length</button>
-        <button hx-get="/decrement_password_length" hx-target="#password_length">decrement password length</button>
+        <button class="secondary" hx-get="/decrement_password_length" hx-target="#password_length">decrement password length</button>
     </div>
 </main>
 </body>
