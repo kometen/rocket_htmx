@@ -9,5 +9,8 @@
 <body>
 <h1>Fly 🦀🚀</h1>
 <p>Hello {{ name }}</p>
+<p id="password_count">Password-count: {{ password_count_value }}</p>
+<button ht-get="/increment_password_count" hx-target="#password_count">increment password count</button>
+<button ht-get="/decrement_password_count" hx-target="#password_count">decrement password count</button>
 </body>
 </html>
