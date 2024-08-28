@@ -29,7 +29,8 @@
     </div>
     <hr/>
     <div>
-        <button hx-get="/generate_passwords">Generate passwords</button>
+        <button hx-get="/generate_passwords" hx-target="#password-generator">Generate passwords</button>
+    </div>
     <table>
         <thead>
         <tr>
@@ -38,15 +39,14 @@
         </tr>
         </thead>
         <tbody>
-        <tr>
+        <tr id="password-generator">
             {% for p in passwords %}
-                <td>{{ p.password }}</td>
-                <td>{{ p.score }}</td>
+            <td>{{ p.password }}</td>
+            <td>{{ p.score }}</td>
             {% endfor %}
         </tr>
         </tbody>
     </table>
-    </div>
 </main>
 </body>
 </html>

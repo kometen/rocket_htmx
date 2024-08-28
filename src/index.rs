@@ -13,7 +13,6 @@ pub struct IndexTemplate {
     name: String,
     password_count_value: u8,
     password_length_value: u8,
-    foo: String,
     passwords: Vec<Pwd>,
 }
 
@@ -30,7 +29,6 @@ pub async fn root(
         name: "World".to_string(),
         password_count_value: password_count.count.load(Ordering::Relaxed),
         password_length_value: password_count.length.load(Ordering::Relaxed),
-        foo: "bar".to_string(),
         passwords: vec![],
     };
 

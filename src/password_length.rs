@@ -1,4 +1,3 @@
-use crate::password_generator::{generate_passwords, Pwd};
 use crate::PasswordAttributes;
 use askama::Template;
 use rocket::response::status::NotFound;
@@ -21,7 +20,6 @@ pub async fn increment_password_length(
         password_attribute.length.store(c, Ordering::Relaxed);
     }
 
-    let passwords = generate_passwords(&password_attribute);
     let template = PasswordLengthTemplate {
         password_length_value: password_attribute.length.load(Ordering::Relaxed),
     };
@@ -44,7 +42,6 @@ pub async fn decrement_password_length(
         password_attribute.length.store(c, Ordering::Relaxed);
     }
 
-    let passwords = generate_passwords(&password_attribute);
     let template = PasswordLengthTemplate {
         password_length_value: password_attribute.length.load(Ordering::Relaxed),
     };

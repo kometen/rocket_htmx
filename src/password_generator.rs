@@ -45,7 +45,6 @@ pub async fn generate_passwords(password_attribute: &State<PasswordAttributes>) 
             });
         })
         .count();
-    println!("{:?}", pwd);
 
     let template = PasswordsTemplate {
         passwords: pwd,
