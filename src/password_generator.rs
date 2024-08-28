@@ -21,8 +21,6 @@ pub struct PasswordsTemplate {
 pub async fn generate_passwords(
     password_attribute: &State<PasswordAttributes>,
 ) -> Result<PasswordsTemplate, NotFound<String>> {
-    println!("generate_passwords()");
-
     let count = password_attribute.count.load(Ordering::Relaxed) as usize;
     let length = password_attribute.length.load(Ordering::Relaxed) as usize;
 

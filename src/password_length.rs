@@ -23,10 +23,6 @@ pub async fn increment_password_length(
     let template = PasswordLengthTemplate {
         password_length_value: password_attribute.length.load(Ordering::Relaxed),
     };
-    println!(
-        "Increment password length: {}",
-        password_attribute.length.load(Ordering::Relaxed)
-    );
 
     let response = template;
     Ok(response)
@@ -45,10 +41,6 @@ pub async fn decrement_password_length(
     let template = PasswordLengthTemplate {
         password_length_value: password_attribute.length.load(Ordering::Relaxed),
     };
-    println!(
-        "Decrement password length: {}",
-        password_attribute.length.load(Ordering::Relaxed)
-    );
 
     let response = template;
     Ok(response)

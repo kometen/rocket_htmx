@@ -23,10 +23,6 @@ pub async fn increment_password_count(
     let template = PasswordCounterTemplate {
         password_count_value: password_attribute.count.load(Ordering::Relaxed),
     };
-    println!(
-        "Increment password count: {}",
-        password_attribute.count.load(Ordering::Relaxed)
-    );
 
     let response = template;
     Ok(response)
@@ -45,10 +41,6 @@ pub async fn decrement_password_count(
     let template = PasswordCounterTemplate {
         password_count_value: password_attribute.count.load(Ordering::Relaxed),
     };
-    println!(
-        "Decrement password count: {}",
-        password_attribute.count.load(Ordering::Relaxed)
-    );
 
     let response = template;
     Ok(response)
