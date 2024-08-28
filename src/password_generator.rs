@@ -8,7 +8,7 @@ use std::sync::atomic::Ordering;
 #[derive(serde::Serialize, Debug)]
 pub struct Pwd {
     pub password: String,
-    pub score: f64,
+    pub score: u8,
 }
 
 #[derive(Template, Debug)]
@@ -32,7 +32,7 @@ pub async fn generate_passwords(
         lowercase_letters: true,
         uppercase_letters: true,
         symbols: false,
-        spaces: true,
+        spaces: false,
         exclude_similar_characters: false,
         strict: true,
     };
@@ -45,7 +45,7 @@ pub async fn generate_passwords(
         .map(|x| {
             pwd.push(Pwd {
                 password: x.clone(),
-                score: scorer::score(&analyzer::analyze(&x)),
+                score: scorer::score(&analyzer::analyze(&x)).round() as u8,
             });
         })
         .count();

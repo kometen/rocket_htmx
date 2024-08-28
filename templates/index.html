@@ -5,40 +5,48 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="color-scheme" content="light dark">
     <title>Rust and askama template engine</title>
-    <link rel="stylesheet" href="/static/css/pico.min.css">
-    <script src="/static/htmx.min.js"></script>
+    <link rel="stylesheet" href="/static/css/bootstrap.min.css">
+    <script src="/static/js/bootstrap.bundle.min.js"></script>
+    <script src="/static/js/htmx.min.js"></script>
 </head>
 <body>
 <main class="container">
     <h1>Fly 🦀🚀</h1>
     <p>Hello {{ name }}</p>
-    <div>
-        <p id="password_count">Password-count: {{ password_count_value }}</p>
-        <button hx-get="/increment_password_count" hx-target="#password_count">increment password count</button>
-        <button class="secondary" hx-get="/decrement_password_count" hx-target="#password_count">decrement password
-            count
+    <p id="password_count">Password-count: {{ password_count_value }}</p>
+    <div class="d-grid gap-2 d-md-block">
+        <button type="button" class="btn btn-primary" hx-get="/increment_password_count" hx-target="#password_count">
+            More passwords
+        </button>
+        <button type="button" class="btn btn-secondary" hx-get="/decrement_password_count" hx-target="#password_count">
+            Fewer passwords
+        </button>
+    </div>
+    <hr/>
+    <p id="password_length">Password-length: {{ password_length_value }}</p>
+    <div class="d-grid gap-2 d-md-block">
+        <button type="button" class="btn btn-primary" hx-get="/increment_password_length" hx-target="#password_length">
+            Longer passwords
+        </button>
+        <button type="button" class="btn btn-secondary" hx-get="/decrement_password_length"
+                hx-target="#password_length">
+            Shorter passwords
         </button>
     </div>
     <hr/>
     <div>
-        <p id="password_length">Password-length: {{ password_length_value }}</p>
-        <button hx-get="/increment_password_length" hx-target="#password_length">increment password length</button>
-        <button class="secondary" hx-get="/decrement_password_length" hx-target="#password_length">decrement password
-            length
+        <button type="button" class="btn btn-primary" hx-get="/generate_passwords" hx-target="#password-generator">
+            Generate passwords
         </button>
     </div>
-    <hr/>
-    <div>
-        <button hx-get="/generate_passwords" hx-target="#password-generator">Generate passwords</button>
-    </div>
-    <table>
+    <table class="table">
         <thead>
         <tr>
             <th scope="row">Password</th>
             <th scope="row">Score</th>
         </tr>
         </thead>
-        <tbody id="password-generator">
+        <tbody class="font-monospace" id="password-generator">
         {% for p in passwords %}
         <tr>
             <td>{{ p.password }}</td>
