@@ -20,10 +20,6 @@ pub struct IndexTemplate {
 pub async fn root(
     password_count: &State<PasswordAttributes>,
 ) -> Result<IndexTemplate, NotFound<String>> {
-    println!(
-        "Initial password count: {}",
-        password_count.count.load(Ordering::Relaxed)
-    );
 
     let template = IndexTemplate {
         name: "World".to_string(),
