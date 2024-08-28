@@ -16,7 +16,7 @@ pub async fn increment_password_length(
 ) -> Result<PasswordLengthTemplate, NotFound<String>> {
     let c = password_attribute.length.load(Ordering::Relaxed) + 1;
 
-    if c < 21 {
+    if c < 26 {
         password_attribute.length.store(c, Ordering::Relaxed);
     }
 
