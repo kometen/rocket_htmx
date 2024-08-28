@@ -1,16 +1,23 @@
 use crate::PasswordAttributes;
 use passwords::{analyzer, scorer, PasswordGenerator};
-use rocket::serde::json::Json;
 use rocket::State;
 use std::sync::atomic::Ordering;
+use askama::Template;
 
 #[derive(serde::Serialize, Debug)]
 pub struct Pwd {
-    password: String,
-    score: f64,
+    pub password: String,
+    pub score: f64,
 }
 
-pub fn produce_passwords(password_attribute: &State<PasswordAttributes>) -> Json<Vec<Pwd>> {
+#[derive(Template, Debug)]
+#[template(path = "components/passwords.html")]
+pub struct PasswordsTemplate {
+    foo: String,
+    passwords: Vec<Pwd>,
+}
+
+pub fn produce_passwords(password_attribute: &State<PasswordAttributes>) -> Result<PasswordsTemplate, rocket::http::Status> {
     let count = password_attribute.count.load(Ordering::Relaxed) as usize;
     let length = password_attribute.length.load(Ordering::Relaxed) as usize;
 
@@ -25,7 +32,8 @@ pub fn produce_passwords(password_attribute: &State<PasswordAttributes>) -> Json
         strict: true,
     };
 
-    let mut pwd: Vec<Pwd> = Vec::with_capacity(count);
+    let mut pwd: Vec<Pwd> = Vec::new();
+    pwd.reserve_exact(count);
     pg.generate(count)
         .unwrap()
         .into_iter()
@@ -36,5 +44,12 @@ pub fn produce_passwords(password_attribute: &State<PasswordAttributes>) -> Json
             });
         })
         .count();
-    Json(pwd)
+    println!("{:?}", pwd);
+
+    let template = PasswordsTemplate {
+        foo: "foo_bar_baz".to_string(),
+        passwords: pwd,
+    };
+
+    Ok(template)
 }

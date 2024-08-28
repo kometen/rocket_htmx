@@ -5,6 +5,7 @@ use rocket::response::status::NotFound;
 use rocket::State;
 use std::path::PathBuf;
 use std::sync::atomic::Ordering;
+use crate::password_generator::Pwd;
 
 #[derive(Template)]
 #[template(path = "index.html")]
@@ -12,6 +13,8 @@ pub struct IndexTemplate {
     name: String,
     password_count_value: u8,
     password_length_value: u8,
+    foo: String,
+    passwords: Vec<Pwd>,
 }
 
 #[get("/")]
@@ -27,6 +30,8 @@ pub async fn root(
         name: "World".to_string(),
         password_count_value: password_count.count.load(Ordering::Relaxed),
         password_length_value: password_count.length.load(Ordering::Relaxed),
+        foo: "bar".to_string(),
+        passwords: vec![],
     };
 
     let response = template;

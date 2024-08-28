@@ -12,11 +12,13 @@ extern crate rocket;
 use crate::index::{root, static_files};
 use crate::password_counter::{decrement_password_count, increment_password_count};
 use crate::password_length::{decrement_password_length, increment_password_length};
-use std::sync::atomic::AtomicU8;
+use std::sync::atomic::{AtomicU8};
+use crate::password_generator::Pwd;
 
 pub struct PasswordAttributes {
     count: AtomicU8,
     length: AtomicU8,
+    passwords: Vec<Pwd>,
 }
 
 #[launch]
@@ -25,6 +27,7 @@ fn rocket() -> _ {
         .manage(PasswordAttributes {
             count: AtomicU8::new(5),
             length: AtomicU8::new(6),
+            passwords: vec![],
         })
         .mount(
             "/",

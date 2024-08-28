@@ -30,7 +30,7 @@ pub async fn increment_password_length(
     );
 
     let response = template;
-    println!("{:?}", produce_passwords(&password_attribute));
+    produce_passwords(&password_attribute).expect("Error parsing template");
     Ok(response)
 }
 
@@ -53,6 +53,6 @@ pub async fn decrement_password_length(
     );
 
     let response = template;
-    println!("{:?}", produce_passwords(&password_attribute));
+    produce_passwords(&password_attribute).expect("Error parsing template");
     Ok(response)
 }
