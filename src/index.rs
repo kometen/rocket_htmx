@@ -1,3 +1,4 @@
+use crate::password_generator::Pwd;
 use crate::PasswordAttributes;
 use askama::Template;
 use rocket::fs::NamedFile;
@@ -5,7 +6,6 @@ use rocket::response::status::NotFound;
 use rocket::State;
 use std::path::PathBuf;
 use std::sync::atomic::Ordering;
-use crate::password_generator::Pwd;
 
 #[derive(Template)]
 #[template(path = "index.html")]
@@ -20,7 +20,6 @@ pub struct IndexTemplate {
 pub async fn root(
     password_count: &State<PasswordAttributes>,
 ) -> Result<IndexTemplate, NotFound<String>> {
-
     let template = IndexTemplate {
         name: "World".to_string(),
         password_count_value: password_count.count.load(Ordering::Relaxed),

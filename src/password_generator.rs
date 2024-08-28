@@ -1,9 +1,9 @@
 use crate::PasswordAttributes;
+use askama::Template;
 use passwords::{analyzer, scorer, PasswordGenerator};
+use rocket::response::status::NotFound;
 use rocket::State;
 use std::sync::atomic::Ordering;
-use askama::Template;
-use rocket::response::status::NotFound;
 
 #[derive(serde::Serialize, Debug)]
 pub struct Pwd {
@@ -18,7 +18,9 @@ pub struct PasswordsTemplate {
 }
 
 #[get("/generate_passwords")]
-pub async fn generate_passwords(password_attribute: &State<PasswordAttributes>) -> Result<PasswordsTemplate, NotFound<String>> {
+pub async fn generate_passwords(
+    password_attribute: &State<PasswordAttributes>,
+) -> Result<PasswordsTemplate, NotFound<String>> {
     println!("generate_passwords()");
 
     let count = password_attribute.count.load(Ordering::Relaxed) as usize;
@@ -48,9 +50,7 @@ pub async fn generate_passwords(password_attribute: &State<PasswordAttributes>) 
         })
         .count();
 
-    let template = PasswordsTemplate {
-        passwords: pwd,
-    };
+    let template = PasswordsTemplate { passwords: pwd };
 
     Ok(template)
 }
