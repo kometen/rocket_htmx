@@ -28,6 +28,8 @@
         </button>
     </div>
     <hr/>
+    <div>
+        <button hx-get="/generate_passwords">Generate passwords</button>
     <table>
         <thead>
         <tr>
@@ -37,16 +39,14 @@
         </thead>
         <tbody>
         <tr>
-            {{ foo }}
             {% for p in passwords %}
-            <tr>
                 <td>{{ p.password }}</td>
                 <td>{{ p.score }}</td>
-            </tr>
-        {% endfor %}
+            {% endfor %}
         </tr>
         </tbody>
     </table>
+    </div>
 </main>
 </body>
 </html>

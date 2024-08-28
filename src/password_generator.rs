@@ -3,6 +3,7 @@ use passwords::{analyzer, scorer, PasswordGenerator};
 use rocket::State;
 use std::sync::atomic::Ordering;
 use askama::Template;
+use rocket::response::status::NotFound;
 
 #[derive(serde::Serialize, Debug)]
 pub struct Pwd {
@@ -13,11 +14,11 @@ pub struct Pwd {
 #[derive(Template, Debug)]
 #[template(path = "components/passwords.html")]
 pub struct PasswordsTemplate {
-    foo: String,
     passwords: Vec<Pwd>,
 }
 
-pub fn produce_passwords(password_attribute: &State<PasswordAttributes>) -> Result<PasswordsTemplate, rocket::http::Status> {
+#[get("/generate_passwords")]
+pub async fn generate_passwords(password_attribute: &State<PasswordAttributes>) -> Result<PasswordsTemplate, NotFound<String>> {
     let count = password_attribute.count.load(Ordering::Relaxed) as usize;
     let length = password_attribute.length.load(Ordering::Relaxed) as usize;
 
@@ -47,7 +48,6 @@ pub fn produce_passwords(password_attribute: &State<PasswordAttributes>) -> Resu
     println!("{:?}", pwd);
 
     let template = PasswordsTemplate {
-        foo: "foo_bar_baz".to_string(),
         passwords: pwd,
     };
 

@@ -1,9 +1,10 @@
-use crate::password_generator::produce_passwords;
+use crate::password_generator::{generate_passwords, Pwd};
 use crate::PasswordAttributes;
 use askama::Template;
 use rocket::response::status::NotFound;
 use rocket::State;
 use std::sync::atomic::Ordering;
+use crate::password_length::PasswordLengthTemplate;
 
 #[derive(Template)]
 #[template(path = "components/password_counter.html")]
@@ -21,6 +22,7 @@ pub async fn increment_password_count(
         password_attribute.count.store(c, Ordering::Relaxed);
     }
 
+    let passwords = generate_passwords(&password_attribute);
     let template = PasswordCounterTemplate {
         password_count_value: password_attribute.count.load(Ordering::Relaxed),
     };
@@ -30,7 +32,6 @@ pub async fn increment_password_count(
     );
 
     let response = template;
-    produce_passwords(&password_attribute).expect("Error parsing template");
     Ok(response)
 }
 
@@ -44,6 +45,7 @@ pub async fn decrement_password_count(
         password_attribute.count.store(c, Ordering::Relaxed);
     }
 
+    let passwords = generate_passwords(&password_attribute);
     let template = PasswordCounterTemplate {
         password_count_value: password_attribute.count.load(Ordering::Relaxed),
     };
@@ -53,6 +55,5 @@ pub async fn decrement_password_count(
     );
 
     let response = template;
-    produce_passwords(&password_attribute).expect("Error parsing template");
     Ok(response)
 }
