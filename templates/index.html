@@ -38,13 +38,13 @@
             <th scope="row">Score</th>
         </tr>
         </thead>
-        <tbody>
-        <tr id="password-generator">
-            {% for p in passwords %}
+        <tbody id="password-generator">
+        {% for p in passwords %}
+        <tr>
             <td>{{ p.password }}</td>
             <td>{{ p.score }}</td>
-            {% endfor %}
         </tr>
+        {% endfor %}
         </tbody>
     </table>
 </main>
