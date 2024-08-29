@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="">
+<html lang="" xmlns:hx-on="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -11,49 +11,77 @@
 </head>
 <body>
 <main class="container">
-    <h1>Fly 🦀🚀</h1>
-    <p>Hello {{ name }}</p>
-    <p id="password_count">Password-count: {{ password_count_value }}</p>
-    <div class="d-grid gap-2 d-md-block">
-        <button type="button" class="btn btn-primary" hx-get="/increment_password_count" hx-target="#password_count">
-            More passwords
-        </button>
-        <button type="button" class="btn btn-secondary" hx-get="/decrement_password_count" hx-target="#password_count">
-            Fewer passwords
-        </button>
+    <div id="passwords_refresh">
+        <h1>Fly 🦀🚀</h1>
+        <p>Hello {{ name }}</p>
+        <p id="password_count">Password-count: {{ password_count_value }}</p>
+        <div class="d-grid gap-2 d-md-block" hx-on:click="/generate_passwords">
+            <button
+                    type="button"
+                    class="btn btn-primary"
+                    hx-get="/increment_password_count"
+                    hx-target="#password_count"
+            >
+                More passwords
+            </button>
+            <button
+                    type="button"
+                    class="btn btn-secondary"
+                    hx-get="/decrement_password_count"
+                    hx-target="#password_count"
+            >
+                Fewer passwords
+            </button>
+        </div>
+        <hr/>
+        <p id="password_length">Password-length: {{ password_length_value }}</p>
+        <div class="d-grid gap-2 d-md-block">
+            <button
+                    type="button"
+                    class="btn btn-primary"
+                    hx-get="/increment_password_length"
+                    hx-target="#password_length"
+            >
+                Longer passwords
+            </button>
+            <button
+                    id="modify_password_settings"
+                    type="button"
+                    class="btn btn-secondary"
+                    hx-get="/decrement_password_length"
+                    hx-target="#password_length"
+            >
+                Shorter passwords
+            </button>
+        </div>
+        <hr/>
+        <div hx-trigger="click from:#modify_password_settings" hx-get="/generate_passwords" hx-target="#password-generator">
+            <button
+                    type="button"
+                    class="btn btn-primary"
+                    hx-get="/generate_passwords"
+                    hx-target="#password-generator"
+            >
+                Generate passwords
+            </button>
+        </div>
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="row">Password</th>
+                <th scope="row">Score</th>
+            </tr>
+            </thead>
+            <tbody class="font-monospace" id="password-generator" hx-get="/generate_passwords" hx-trigger="refreshPasswords from:body">
+            {% for p in passwords %}
+            <tr>
+                <td>{{ p.password }}</td>
+                <td>{{ p.score }}</td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
     </div>
-    <hr/>
-    <p id="password_length">Password-length: {{ password_length_value }}</p>
-    <div class="d-grid gap-2 d-md-block">
-        <button type="button" class="btn btn-primary" hx-get="/increment_password_length" hx-target="#password_length">
-            Longer passwords
-        </button>
-        <button type="button" class="btn btn-secondary" hx-get="/decrement_password_length" hx-target="#password_length">
-            Shorter passwords
-        </button>
-    </div>
-    <hr/>
-    <div>
-        <button type="button" class="btn btn-primary" hx-get="/generate_passwords" hx-target="#password-generator">
-            Generate passwords
-        </button>
-    </div>
-    <table class="table">
-        <thead>
-        <tr>
-            <th scope="row">Password</th>
-            <th scope="row">Score</th>
-        </tr>
-        </thead>
-        <tbody class="font-monospace" id="password-generator">
-        {% for p in passwords %}
-        <tr>
-            <td>{{ p.password }}</td>
-            <td>{{ p.score }}</td>
-        </tr>
-        {% endfor %}
-        </tbody>
-    </table>
 </main>
 </body>
 </html>
