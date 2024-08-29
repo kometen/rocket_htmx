@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="" xmlns:hx-on="http://www.w3.org/1999/xhtml">
+<html lang="">
 <head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -15,8 +15,9 @@
         <h1>Fly 🦀🚀</h1>
         <p>Hello {{ name }}</p>
         <p id="password_count">Password-count: {{ password_count_value }}</p>
-        <div class="d-grid gap-2 d-md-block" hx-on:click="/generate_passwords">
+        <div class="d-grid gap-2 d-md-block">
             <button
+                    id="modify_password_settings_1"
                     type="button"
                     class="btn btn-primary"
                     hx-get="/increment_password_count"
@@ -25,6 +26,7 @@
                 More passwords
             </button>
             <button
+                    id="modify_password_settings_2"
                     type="button"
                     class="btn btn-secondary"
                     hx-get="/decrement_password_count"
@@ -37,6 +39,7 @@
         <p id="password_length">Password-length: {{ password_length_value }}</p>
         <div class="d-grid gap-2 d-md-block">
             <button
+                    id="modify_password_settings_3"
                     type="button"
                     class="btn btn-primary"
                     hx-get="/increment_password_length"
@@ -45,7 +48,7 @@
                 Longer passwords
             </button>
             <button
-                    id="modify_password_settings"
+                    id="modify_password_settings_4"
                     type="button"
                     class="btn btn-secondary"
                     hx-get="/decrement_password_length"
@@ -55,7 +58,7 @@
             </button>
         </div>
         <hr/>
-        <div hx-trigger="click from:#modify_password_settings" hx-get="/generate_passwords" hx-target="#password-generator">
+        <div hx-trigger="click from:#modify_password_settings_1 delay:50ms" hx-get="/generate_passwords" hx-target="#password-generator">
             <button
                     type="button"
                     class="btn btn-primary"
