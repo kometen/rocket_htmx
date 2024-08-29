@@ -58,7 +58,7 @@
             </button>
         </div>
         <hr/>
-        <div hx-trigger="click from:#modify_password_settings_1 delay:50ms" hx-get="/generate_passwords" hx-target="#password-generator">
+        <div>
             <button
                     type="button"
                     class="btn btn-primary"
@@ -68,22 +68,38 @@
                 Generate passwords
             </button>
         </div>
-        <table class="table">
-            <thead>
-            <tr>
-                <th scope="row">Password</th>
-                <th scope="row">Score</th>
-            </tr>
-            </thead>
-            <tbody class="font-monospace" id="password-generator" hx-get="/generate_passwords" hx-trigger="refreshPasswords from:body">
-            {% for p in passwords %}
-            <tr>
-                <td>{{ p.password }}</td>
-                <td>{{ p.score }}</td>
-            </tr>
-            {% endfor %}
-            </tbody>
-        </table>
+
+        <div hx-trigger="click from:#modify_password_settings_1 delay:25ms"
+             hx-get="/generate_passwords" hx-target="#password-generator">
+            <div hx-trigger="click from:#modify_password_settings_2 delay:25ms"
+                 hx-get="/generate_passwords" hx-target="#password-generator">
+                <div hx-trigger="click from:#modify_password_settings_3 delay:25ms"
+                     hx-get="/generate_passwords" hx-target="#password-generator">
+                    <div hx-trigger="click from:#modify_password_settings_4 delay:25ms"
+                         hx-get="/generate_passwords" hx-target="#password-generator">
+
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th scope="row">Password</th>
+                                <th scope="row">Score</th>
+                            </tr>
+                            </thead>
+                            <tbody class="font-monospace" id="password-generator" hx-get="/generate_passwords"
+                                   hx-trigger="refreshPasswords from:body">
+                            {% for p in passwords %}
+                            <tr>
+                                <td>{{ p.password }}</td>
+                                <td>{{ p.score }}</td>
+                            </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </main>
 </body>
