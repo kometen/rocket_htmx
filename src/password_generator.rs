@@ -22,17 +22,18 @@ pub async fn generate_passwords(
     password_attribute: &State<PasswordAttributes>,
 ) -> Result<PasswordsTemplate, NotFound<String>> {
     let count = password_attribute.count.load(Ordering::Relaxed) as usize;
-    let length = password_attribute.length.load(Ordering::Relaxed) as usize;
 
     let pg = PasswordGenerator {
-        length,
-        numbers: true,
-        lowercase_letters: true,
-        uppercase_letters: true,
-        symbols: false,
-        spaces: false,
-        exclude_similar_characters: false,
-        strict: true,
+        length: password_attribute.length.load(Ordering::Relaxed) as usize,
+        numbers: password_attribute.numbers.load(Ordering::Relaxed),
+        lowercase_letters: password_attribute.lowercase_letters.load(Ordering::Relaxed),
+        uppercase_letters: password_attribute.uppercase_letters.load(Ordering::Relaxed),
+        symbols: password_attribute.symbols.load(Ordering::Relaxed),
+        spaces: password_attribute.spaces.load(Ordering::Relaxed),
+        exclude_similar_characters: password_attribute
+            .exclude_similar_characters
+            .load(Ordering::Relaxed),
+        strict: password_attribute.strict.load(Ordering::Relaxed),
     };
 
     let mut pwd: Vec<Pwd> = Vec::new();

@@ -1,7 +1,8 @@
 <!doctype html>
 <html lang="">
+
 <head>
-    <meta charset="UTF-8"/>
+    <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="color-scheme" content="light dark">
     <title>Rust and askama template engine</title>
@@ -9,98 +10,140 @@
     <script src="/static/js/bootstrap.bundle.min.js"></script>
     <script src="/static/js/htmx.min.js"></script>
 </head>
+
 <body>
-<main class="container">
-    <div id="passwords_refresh">
-        <h1>Fly 🦀🚀</h1>
-        <p>Hello {{ name }}</p>
-        <p id="password_count">Password-count: {{ password_count_value }}</p>
-        <div class="d-grid gap-2 d-md-block">
-            <button
-                    id="modify_password_settings_1"
-                    type="button"
-                    class="btn btn-primary"
-                    hx-get="/increment_password_count"
-                    hx-target="#password_count"
-            >
-                More passwords
-            </button>
-            <button
-                    id="modify_password_settings_2"
-                    type="button"
-                    class="btn btn-secondary"
-                    hx-get="/decrement_password_count"
-                    hx-target="#password_count"
-            >
-                Fewer passwords
-            </button>
-        </div>
-        <hr/>
-        <p id="password_length">Password-length: {{ password_length_value }}</p>
-        <div class="d-grid gap-2 d-md-block">
-            <button
-                    id="modify_password_settings_3"
-                    type="button"
-                    class="btn btn-primary"
-                    hx-get="/increment_password_length"
-                    hx-target="#password_length"
-            >
-                Longer passwords
-            </button>
-            <button
-                    id="modify_password_settings_4"
-                    type="button"
-                    class="btn btn-secondary"
-                    hx-get="/decrement_password_length"
-                    hx-target="#password_length"
-            >
-                Shorter passwords
-            </button>
-        </div>
-        <hr/>
-        <div>
-            <button
-                    type="button"
-                    class="btn btn-primary"
-                    hx-get="/generate_passwords"
-                    hx-target="#password-generator"
-            >
-                Generate passwords
-            </button>
-        </div>
+    <main class="container">
+        <div id="passwords_refresh">
+            <h1>Fly 🦀🚀</h1>
+            <p>Hello {{ name }}</p>
 
-        <div hx-trigger="click from:#modify_password_settings_1 delay:25ms"
-             hx-get="/generate_passwords" hx-target="#password-generator">
-            <div hx-trigger="click from:#modify_password_settings_2 delay:25ms"
-                 hx-get="/generate_passwords" hx-target="#password-generator">
-                <div hx-trigger="click from:#modify_password_settings_3 delay:25ms"
-                     hx-get="/generate_passwords" hx-target="#password-generator">
-                    <div hx-trigger="click from:#modify_password_settings_4 delay:25ms"
-                         hx-get="/generate_passwords" hx-target="#password-generator">
+            <p id="password_count">Password-count: {{ password_count_value }}</p>
+            <div class="d-grid gap-2 d-md-block">
+                <button id="modify_password_settings_1" type="button" class="btn btn-primary"
+                    hx-get="/increment_password_count" hx-target="#password_count">
+                    More passwords
+                </button>
+                <button id="modify_password_settings_2" type="button" class="btn btn-secondary"
+                    hx-get="/decrement_password_count" hx-target="#password_count">
+                    Fewer passwords
+                </button>
+            </div>
+            <hr />
 
-                        <table class="table">
-                            <thead>
+            <p id="password_length">Password-length: {{ password_length_value }}</p>
+            <div class="d-grid gap-2 d-md-block">
+                <button id="modify_password_settings_3" type="button" class="btn btn-primary"
+                    hx-get="/increment_password_length" hx-target="#password_length">
+                    Longer passwords
+                </button>
+                <button id="modify_password_settings_4" type="button" class="btn btn-secondary"
+                    hx-get="/decrement_password_length" hx-target="#password_length">
+                    Shorter passwords
+                </button>
+            </div>
+            <hr />
+
+            <div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Option</th>
+                            <th>Enabled</th>
+                        </tr>
+                    </thead>
+                    <tbody id="password_options_body">
+
                             <tr>
-                                <th scope="row">Password</th>
-                                <th scope="row">Score</th>
+                                <td>Numbers</td>
+                                <td hx-post="/password_options/numbers" hx-target="#numbers_id" hx-swap="outerHTML">
+                                    <input type="checkbox" id="numbers_id" {{ numbers_checkbox }}>
+                                </td>
                             </tr>
-                            </thead>
-                            <tbody class="font-monospace" id="password-generator" hx-get="/generate_passwords"
-                                   hx-trigger="refreshPasswords from:body">
-                            {% for p in passwords %}
-                            <tr>
-                                <td>{{ p.password }}</td>
-                                <td>{{ p.score }}</td>
-                            </tr>
-                            {% endfor %}
-                            </tbody>
-                        </table>
 
+                            <tr>
+                                <td>Lowercase letters</td>
+                                <td hx-post="/password_options/lowercase_letters" hx-target="#lowercase_letters_id" hx-swap="outerHTML">
+                                    <input type="checkbox" id="lowercase_letters_id" {{ lowercase_letters_checkbox }}>
+                                </td>
+                            </tr>
+
+                        <tr>
+                            <td>Uppercase letters</td>
+                            <td hx-post="/password_options/uppercase_letters" hx-target="#uppercase_letters_id" hx-swap="outerHTML">
+                                <input type="checkbox" id="uppercase_letters_id" {{ uppercase_letters_checkbox }}>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>Symbols</td>
+                            <td hx-post="/password_options/symbols" hx-target="#symbols_id" hx-swap="outerHTML">
+                                <input type="checkbox" id="symbols_id" {{ symbols_checkbox }}>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>Spaces</td>
+                            <td hx-post="/password_options/spaces" hx-target="#spaces_id" hx-swap="outerHTML">
+                                <input type="checkbox" id="spaces_id" {{ spaces_checkbox }}>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>Exclude similar characters</td>
+                            <td hx-post="/password_options/exclude_similar_characters"
+                                hx-target="#exclude_similar_characters_id" hx-swap="outerHTML">
+                                <input type="checkbox" id="exclude_similar_characters_id" {{ exclude_similar_characters_checkbox }}>
+                            </td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+            <hr />
+
+            <div>
+                <button type="button" class="btn btn-primary" hx-get="/generate_passwords"
+                    hx-target="#password-generator">
+                    Generate passwords
+                </button>
+            </div>
+
+            <div hx-trigger="click from:#modify_password_settings_1 delay:25ms" hx-get="/generate_passwords"
+                hx-target="#password-generator">
+                <div hx-trigger="click from:#modify_password_settings_2 delay:25ms" hx-get="/generate_passwords"
+                    hx-target="#password-generator">
+                    <div hx-trigger="click from:#modify_password_settings_3 delay:25ms" hx-get="/generate_passwords"
+                        hx-target="#password-generator">
+                        <div hx-trigger="click from:#modify_password_settings_4 delay:25ms" hx-get="/generate_passwords"
+                            hx-target="#password-generator">
+                            <div hx-trigger="click from:#password_options_body delay:25ms" hx-get="/generate_passwords"
+                                hx-target="#password-generator">
+
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th scope="row">Password</th>
+                                            <th scope="row">Score</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="font-monospace" id="password-generator" hx-get="/generate_passwords"
+                                        hx-trigger="refreshPasswords from:body">
+                                        {% for p in passwords %}
+                                        <tr>
+                                            <td>{{ p.password }}</td>
+                                            <td>{{ p.score }}</td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-</main>
+    </main>
 </body>
+
 </html>
