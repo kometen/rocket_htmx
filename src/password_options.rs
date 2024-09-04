@@ -5,7 +5,11 @@ use rocket::State;
 use std::sync::atomic::Ordering;
 
 macro_rules! create_password_option_template {
-    ($struct_name:ident, $template_path:literal, $checkbox_name:ident) => {
+    (
+        $struct_name:ident,
+        $template_path:literal,
+        $checkbox_name:ident
+    ) => {
         #[derive(Template)]
         #[template(path = $template_path)]
         pub struct $struct_name {
@@ -42,9 +46,7 @@ pub async fn change_numbers_option(
     password_attributes: &State<PasswordAttributes>,
 ) -> Result<PasswordOptionNumbersTemplate, NotFound<String>> {
     println!("check_options: {}", check_options(password_attributes));
-    let checkbox_status = match password_attributes
-        .numbers
-        .load(Ordering::Relaxed)
+    let checkbox_status = match password_attributes.numbers.load(Ordering::Relaxed)
         && check_options(password_attributes)
     {
         true => {
@@ -207,9 +209,7 @@ pub async fn symbols_option(
 pub async fn change_symbols_option(
     password_attributes: &State<PasswordAttributes>,
 ) -> Result<PasswordOptionSymbolsTemplate, NotFound<String>> {
-    let checkbox_status = match password_attributes
-        .symbols
-        .load(Ordering::Relaxed)
+    let checkbox_status = match password_attributes.symbols.load(Ordering::Relaxed)
         && check_options(password_attributes)
     {
         true => {
@@ -257,9 +257,7 @@ pub async fn spaces_option(
 pub async fn change_spaces_option(
     password_attributes: &State<PasswordAttributes>,
 ) -> Result<PasswordOptionSpacesTemplate, NotFound<String>> {
-    let checkbox_status = match password_attributes
-        .spaces
-        .load(Ordering::Relaxed)
+    let checkbox_status = match password_attributes.spaces.load(Ordering::Relaxed)
         && check_options(password_attributes)
     {
         true => {
@@ -339,13 +337,17 @@ pub async fn change_exclude_similar_characters_option(
 fn check_options(password_attributes: &State<PasswordAttributes>) -> bool {
     [
         password_attributes.numbers.load(Ordering::Relaxed),
-        password_attributes.lowercase_letters.load(Ordering::Relaxed),
-        password_attributes.uppercase_letters.load(Ordering::Relaxed),
+        password_attributes
+            .lowercase_letters
+            .load(Ordering::Relaxed),
+        password_attributes
+            .uppercase_letters
+            .load(Ordering::Relaxed),
         password_attributes.symbols.load(Ordering::Relaxed),
         password_attributes.spaces.load(Ordering::Relaxed),
     ]
-        .into_iter()
-        .filter(|&x| x)
-        .count()
+    .into_iter()
+    .filter(|&x| x)
+    .count()
         > 1
 }
