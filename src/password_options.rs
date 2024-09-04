@@ -4,11 +4,21 @@ use rocket::response::status::NotFound;
 use rocket::State;
 use std::sync::atomic::Ordering;
 
-#[derive(Template)]
-#[template(path = "components/password_option_numbers.html")]
-pub struct PasswordOptionNumbersTemplate {
-    numbers_checkbox: String,
+macro_rules! create_password_option_template {
+    ($struct_name:ident, $checkbox_name:ident, $template_path:literal) => {
+        #[derive(Template)]
+        #[template(path = $template_path)]
+        pub struct $struct_name {
+            $checkbox_name: String,
+        }
+    };
 }
+
+create_password_option_template!(
+    PasswordOptionNumbersTemplate,
+    numbers_checkbox,
+    "components/password_option_numbers.html"
+);
 
 #[get("/password_options/numbers")]
 pub async fn numbers_option(
@@ -33,8 +43,8 @@ pub async fn change_numbers_option(
 ) -> Result<PasswordOptionNumbersTemplate, NotFound<String>> {
     println!("check_options: {}", check_options(password_attributes));
     let checkbox_status = match password_attributes
-    .numbers
-    .load(Ordering::Relaxed)
+        .numbers
+        .load(Ordering::Relaxed)
         && check_options(password_attributes)
     {
         true => {
@@ -56,11 +66,11 @@ pub async fn change_numbers_option(
     Ok(response)
 }
 
-#[derive(Template)]
-#[template(path = "components/password_option_lowercase_letters.html")]
-pub struct PasswordOptionLowerCaseLettersTemplate {
-    lowercase_letters_checkbox: String,
-}
+create_password_option_template!(
+    PasswordOptionLowerCaseLettersTemplate,
+    lowercase_letters_checkbox,
+    "components/password_option_lowercase_letters.html"
+);
 
 #[get("/password_options/lowercase_letters")]
 pub async fn lowercase_letters_option(
@@ -113,11 +123,11 @@ pub async fn change_lowercase_letters_option(
     Ok(response)
 }
 
-#[derive(Template)]
-#[template(path = "components/password_option_uppercase_letters.html")]
-pub struct PasswordOptionUpperCaseLettersTemplate {
-    uppercase_letters_checkbox: String,
-}
+create_password_option_template!(
+    PasswordOptionUpperCaseLettersTemplate,
+    uppercase_letters_checkbox,
+    "components/password_option_uppercase_letters.html"
+);
 
 #[get("/password_options/uppercase_letters")]
 pub async fn uppercase_letters_option(
@@ -170,11 +180,11 @@ pub async fn change_uppercase_letters_option(
     Ok(response)
 }
 
-#[derive(Template)]
-#[template(path = "components/password_option_symbols.html")]
-pub struct PasswordOptionSymbolsTemplate {
-    symbols_checkbox: String,
-}
+create_password_option_template!(
+    PasswordOptionSymbolsTemplate,
+    symbols_checkbox,
+    "components/password_option_symbols.html"
+);
 
 #[get("/password_options/symbols")]
 pub async fn symbols_option(
@@ -220,11 +230,11 @@ pub async fn change_symbols_option(
     Ok(response)
 }
 
-#[derive(Template)]
-#[template(path = "components/password_option_spaces.html")]
-pub struct PasswordOptionSpacesTemplate {
-    spaces_checkbox: String,
-}
+create_password_option_template!(
+    PasswordOptionSpacesTemplate,
+    spaces_checkbox,
+    "components/password_option_spaces.html"
+);
 
 #[get("/password_options/spaces")]
 pub async fn spaces_option(
@@ -270,11 +280,11 @@ pub async fn change_spaces_option(
     Ok(response)
 }
 
-#[derive(Template)]
-#[template(path = "components/password_option_exclude_similar_characters.html")]
-pub struct PasswordOptionExcludeSimilarCharactersTemplate {
-    exclude_similar_characters_checkbox: String,
-}
+create_password_option_template!(
+    PasswordOptionExcludeSimilarCharactersTemplate,
+    exclude_similar_characters_checkbox,
+    "components/password_option_exclude_similar_characters.html"
+);
 
 #[get("/password_options/exclude_similar_characters")]
 pub async fn exclude_similar_characters_option(
@@ -327,15 +337,15 @@ pub async fn change_exclude_similar_characters_option(
 }
 
 fn check_options(password_attributes: &State<PasswordAttributes>) -> bool {
-    return [
+    [
         password_attributes.numbers.load(Ordering::Relaxed),
         password_attributes.lowercase_letters.load(Ordering::Relaxed),
         password_attributes.uppercase_letters.load(Ordering::Relaxed),
         password_attributes.symbols.load(Ordering::Relaxed),
         password_attributes.spaces.load(Ordering::Relaxed),
     ]
-    .into_iter()
+        .into_iter()
         .filter(|&x| x)
         .count()
-        > 1;
+        > 1
 }
