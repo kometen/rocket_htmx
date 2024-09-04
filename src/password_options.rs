@@ -5,7 +5,7 @@ use rocket::State;
 use std::sync::atomic::Ordering;
 
 macro_rules! create_password_option_template {
-    ($struct_name:ident, $checkbox_name:ident, $template_path:literal) => {
+    ($struct_name:ident, $template_path:literal, $checkbox_name:ident) => {
         #[derive(Template)]
         #[template(path = $template_path)]
         pub struct $struct_name {
@@ -16,8 +16,8 @@ macro_rules! create_password_option_template {
 
 create_password_option_template!(
     PasswordOptionNumbersTemplate,
-    numbers_checkbox,
-    "components/password_option_numbers.html"
+    "components/password_option_numbers.html",
+    numbers_checkbox
 );
 
 #[get("/password_options/numbers")]
@@ -68,8 +68,8 @@ pub async fn change_numbers_option(
 
 create_password_option_template!(
     PasswordOptionLowerCaseLettersTemplate,
-    lowercase_letters_checkbox,
-    "components/password_option_lowercase_letters.html"
+    "components/password_option_lowercase_letters.html",
+    lowercase_letters_checkbox
 );
 
 #[get("/password_options/lowercase_letters")]
@@ -125,8 +125,8 @@ pub async fn change_lowercase_letters_option(
 
 create_password_option_template!(
     PasswordOptionUpperCaseLettersTemplate,
-    uppercase_letters_checkbox,
-    "components/password_option_uppercase_letters.html"
+    "components/password_option_uppercase_letters.html",
+    uppercase_letters_checkbox
 );
 
 #[get("/password_options/uppercase_letters")]
@@ -182,8 +182,8 @@ pub async fn change_uppercase_letters_option(
 
 create_password_option_template!(
     PasswordOptionSymbolsTemplate,
-    symbols_checkbox,
-    "components/password_option_symbols.html"
+    "components/password_option_symbols.html",
+    symbols_checkbox
 );
 
 #[get("/password_options/symbols")]
@@ -232,8 +232,8 @@ pub async fn change_symbols_option(
 
 create_password_option_template!(
     PasswordOptionSpacesTemplate,
-    spaces_checkbox,
-    "components/password_option_spaces.html"
+    "components/password_option_spaces.html",
+    spaces_checkbox
 );
 
 #[get("/password_options/spaces")]
@@ -282,8 +282,8 @@ pub async fn change_spaces_option(
 
 create_password_option_template!(
     PasswordOptionExcludeSimilarCharactersTemplate,
-    exclude_similar_characters_checkbox,
-    "components/password_option_exclude_similar_characters.html"
+    "components/password_option_exclude_similar_characters.html",
+    exclude_similar_characters_checkbox
 );
 
 #[get("/password_options/exclude_similar_characters")]
