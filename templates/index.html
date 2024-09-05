@@ -130,7 +130,9 @@
                                         hx-trigger="refreshPasswords from:body">
                                         {% for p in passwords %}
                                         <tr>
-                                            <td>{{ p.password }}</td>
+                                            <td>
+                                                <span class="bg-secondary text-light p-1">{{ p.password }}</span>
+                                            </td>
                                             <td>{{ p.score }}</td>
                                         </tr>
                                         {% endfor %}

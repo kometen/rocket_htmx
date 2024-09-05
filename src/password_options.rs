@@ -3,7 +3,21 @@ use askama::Template;
 use rocket::response::status::NotFound;
 use rocket::State;
 use std::sync::atomic::Ordering;
-use rocket::config::Ident;
+
+// Macro to handle GET and POST of password-options.
+// The macro takes the following arguments:
+// 1. The name of the template struct.
+// 2. The path to the template file.
+// 3. The name of the checkbox field in the template.
+// 4. The REST endpoint for the GET and POST requests.
+// 5. The function name for the GET request.
+// 6. The function name for the POST request.
+// 7. The field name in the PasswordAttributes struct to access the option state.
+// 8. The function name to change the option state in the PasswordAttributes struct.
+// The macro creates the following functions:
+// 1. A GET request function that returns the template struct with the checkbox status.
+// 2. A POST request function that changes the option state in the PasswordAttributes struct and returns the template struct with the updated checkbox status.
+// The macro uses the provided arguments to construct the template struct, the GET endpoint, and the POST endpoint.
 
 macro_rules! create_password_option_template {
     (
