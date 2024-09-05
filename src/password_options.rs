@@ -3,34 +3,35 @@ use askama::Template;
 use rocket::response::status::NotFound;
 use rocket::State;
 use std::sync::atomic::Ordering;
+use rocket::config::Ident;
 
 macro_rules! create_password_option_template {
     (
-        $struct_name:ident,
+        $template_struct_name:ident,
         $template_path:literal,
-        $checkbox_name:ident,
+        $checkbox_field_name:ident,
         $rest_endpoint:literal,
         $get_function_name:ident,
-        $option:ident,
+        $option_field_name:ident,
         $post_function_name:ident
     ) => {
         #[derive(Template)]
         #[template(path = $template_path)]
-        pub struct $struct_name {
-            $checkbox_name: String,
+        pub struct $template_struct_name {
+            $checkbox_field_name: String,
         }
 
         #[get($rest_endpoint)]
         pub async fn $get_function_name(
             password_attributes: &State<PasswordAttributes>,
-        ) -> Result<$struct_name, NotFound<String>> {
-            let checkbox_status = match password_attributes.$option.load(Ordering::Relaxed) {
+        ) -> Result<$template_struct_name, NotFound<String>> {
+            let checkbox_status = match password_attributes.$option_field_name.load(Ordering::Relaxed) {
                 true => "checked".to_string(),
                 false => "".to_string(),
             };
 
-            let template = $struct_name {
-                $checkbox_name: checkbox_status,
+            let template = $template_struct_name {
+                $checkbox_field_name: checkbox_status,
             };
 
             let response = template;
@@ -40,22 +41,22 @@ macro_rules! create_password_option_template {
         #[post($rest_endpoint)]
         pub async fn $post_function_name(
             password_attributes: &State<PasswordAttributes>,
-        ) -> Result<$struct_name, NotFound<String>> {
-            let checkbox_status = match password_attributes.$option.load(Ordering::Relaxed)
+        ) -> Result<$template_struct_name, NotFound<String>> {
+            let checkbox_status = match password_attributes.$option_field_name.load(Ordering::Relaxed)
                 && check_options(password_attributes)
             {
                 true => {
-                    password_attributes.$option.store(false, Ordering::Relaxed);
+                    password_attributes.$option_field_name.store(false, Ordering::Relaxed);
                     "".to_string()
                 }
                 false => {
-                    password_attributes.$option.store(true, Ordering::Relaxed);
+                    password_attributes.$option_field_name.store(true, Ordering::Relaxed);
                     "checked".to_string()
                 }
             };
 
-            let template = $struct_name {
-                $checkbox_name: checkbox_status,
+            let template = $template_struct_name {
+                $checkbox_field_name: checkbox_status,
             };
 
             let response = template;
