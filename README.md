@@ -11,6 +11,8 @@ docker run -p 8000:8000 rocket_htmx:dev
 
 Open a browser to http://localhost:8000.
 
+![screenshot](./screenshot.png)
+
 Rocket framework: https://rocket.rs/
 
 Password-crate: https://docs.rs/passwords/latest/passwords/index.html
@@ -18,4 +20,3 @@ Password-crate: https://docs.rs/passwords/latest/passwords/index.html
 Askama template engine: https://djc.github.io/askama/
 
 Htmx extends html: https://htmx.org/
-
